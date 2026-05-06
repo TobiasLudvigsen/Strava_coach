@@ -1,0 +1,23 @@
+# Tokens og credentials — må ALDRIG på GitHub
+tokens.json
+strava_tokens.json
+config.json
+strava_config.json
+
+# Lokal data
+workouts.json
+
+# Cloudflare tunnel
+cloudflared.exe
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# PyCharm
+.idea/
+
+# Windows
+Thumbs.db
