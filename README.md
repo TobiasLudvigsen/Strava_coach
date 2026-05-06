@@ -60,8 +60,19 @@ Update the `FTP` constant at the top of `strava_coach.py` after each test:
 
 ### 4. Cloudflare Tunnel
 
-Download `cloudflared.exe` from [cloudflare/cloudflared releases](https://github.com/cloudflare/cloudflared/releases/latest)
+Download the correct binary from [cloudflare/cloudflared releases](https://github.com/cloudflare/cloudflared/releases/latest)
 and place it in the project folder.
+
+| OS | File to download |
+|----|-----------------|
+| Windows (64-bit) | `cloudflared-windows-amd64.exe` → rename to `cloudflared.exe` |
+| macOS (Apple Silicon) | `cloudflared-darwin-arm64` → rename to `cloudflared` |
+| macOS (Intel) | `cloudflared-darwin-amd64` → rename to `cloudflared` |
+| Linux (64-bit) | `cloudflared-linux-amd64` → rename to `cloudflared` |
+
+On macOS/Linux, make the file executable after downloading:
+
+    chmod +x cloudflared
 
 ---
 
