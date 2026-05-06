@@ -1,13 +1,13 @@
-# Ironman AI — Strava Training Coach System
+# Strava Coach — Training Data Pipeline
 
-Personal training data pipeline that fetches workout data from Strava and exposes it via a local API,
-allowing Claude to read and analyse training sessions directly — without manual copy-paste.
-Built for Ironman World Championship 2027 preparation.
+Automated Strava training data pipeline — fetches sessions, streams and metrics, and exposes them via local API for AI-assisted coaching.
+
+---
 
 ## System Overview
 
-The system fetches cycling and running sessions incrementally (only new since last sync),
-pulls full watt and pace/HR streams per second for recent sessions,
+Fetches cycling and running sessions incrementally (only new since last sync),
+pulls full watt and pace/HR streams for recent sessions,
 and exposes the data through a local Flask server tunneled via Cloudflare.
 
 **What Claude sees per session:**
@@ -15,24 +15,26 @@ and exposes the data through a local Flask server tunneled via Cloudflare.
 - Avg watts | NP | % of FTP (cycling)
 - Pace per km (running)
 - Average HR and cadence
-- Full watt or pace/HR profile broken into 1-minute blocks with zone distribution
+- Full watt or pace/HR profile in 1-minute blocks with zone distribution
+
+---
 
 ## Repository Structure
 
-```
-Ironman/
-├── Ironman_AI.py          # Single-file system — sync, server and tunnel
-├── strava_config.json     # Credentials (not on GitHub — see setup)
-├── strava_tokens.json     # Auto-generated (not on GitHub)
-├── workouts.json          # Local data cache (not on GitHub)
-├── cloudflared.exe        # Tunnel binary (not on GitHub)
-├── .gitignore
-└── README.md
-```
+    strava-coach/
+    ├── strava_coach.py        # Single-file system — sync, server and tunnel
+    ├── strava_config.json     # Credentials (not on GitHub — see setup)
+    ├── strava_tokens.json     # Auto-generated (not on GitHub)
+    ├── workouts.json          # Local data cache (not on GitHub)
+    ├── cloudflared.exe        # Tunnel binary (not on GitHub)
+    ├── .gitignore
+    └── README.md
+
+---
 
 ## Required Setup
 
-### Strava API
+### 1. Strava API
 
 Go to [strava.com/settings/api](https://www.strava.com/settings/api) and create an application:
 
@@ -41,48 +43,36 @@ Go to [strava.com/settings/api](https://www.strava.com/settings/api) and create 
 | Authorization Callback Domain | `localhost` |
 | Scope required | `activity:read_all` |
 
-### Configuration File
+### 2. Configuration File
 
 Create `strava_config.json` in the project folder (never committed):
 
-```json
-{
-  "client_id": "YOUR_CLIENT_ID",
-  "client_secret": "YOUR_CLIENT_SECRET"
-}
-```
+    {
+      "client_id": "YOUR_CLIENT_ID",
+      "client_secret": "YOUR_CLIENT_SECRET"
+    }
 
-### FTP
+### 3. FTP
 
-Update the `FTP` constant at the top of `Ironman_AI.py` after each monthly Half Monty test:
+Update the `FTP` constant at the top of `strava_coach.py` after each test:
 
-```python
-FTP = 190  # Watts
-```
+    FTP = 190  # Watts
 
-### Cloudflare Tunnel
+### 4. Cloudflare Tunnel
 
 Download `cloudflared.exe` from [cloudflare/cloudflared releases](https://github.com/cloudflare/cloudflared/releases/latest)
-and place it in the project folder. Required for Claude to fetch data via public URL.
+and place it in the project folder.
+
+---
 
 ## How to Run
 
-```bash
-pip install requests flask
-python Ironman_AI.py
-```
+    pip install requests flask
+    python strava_coach.py
 
 First run opens a browser for Strava OAuth login. Tokens are saved and auto-refreshed on subsequent runs.
 
-Output when ready:
-
-```
-✅ Sync faerdig — 60 aktiviteter totalt
-✅ Server korer
-✅ Tunnel aaben
-
-📋 Send til Claude: https://xxx.trycloudflare.com/workouts
-```
+---
 
 ## Endpoints
 
@@ -93,11 +83,7 @@ Output when ready:
 | `/summary/week` | Weekly volume per discipline |
 | `/summary/month` | Monthly volume per discipline |
 
-## Dependencies
-
-```
-pip install requests flask
-```
+---
 
 ## Data & Privacy
 
